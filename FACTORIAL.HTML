@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factorial Breakdown</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Define the keyframes for the new "Spin and Settle" animation */
+        @keyframes spin-settle {
+            0% { opacity: 0; transform: translateY(-50px) rotateY(180deg) scale(0.5); }
+            100% { opacity: 1; transform: translateY(0) rotateY(0deg) scale(1); }
+        }
+        /* Apply the animation to the header */
+        .header-animate-new {
+            animation: spin-settle 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1;
+        }
+
+        /* Define the keyframes for the result glow */
+        @keyframes result-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(79, 70, 229, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(124, 58, 237, 1); }
+        }
+        .result-glow-animate {
+            animation: result-glow 2s infinite alternate;
+        }
+        
+        /* Custom styles for the breakdown display */
+        .breakdown-chip {
+            transition: all 0.3s ease-in-out;
+            white-space: nowrap; /* Prevent chips from wrapping in the breakdown */
+        }
+
+        /* Style for the large result text to ensure it wraps nicely */
+        #final-result-text {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        /* Custom style for enhanced header appearance (the "good font" style) */
+        .header-enhanced {
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4 font-sans">
+
+    <div class="max-w-4xl w-full bg-white p-8 md:p-12 rounded-2xl shadow-2xl space-y-8">
+
+        <h1 id="main-header" class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-indigo-700 text-center tracking-tight header-animate-new header-enhanced">
+            Factorial Breakdown
+        </h1>
+
+        <h2 class="text-base sm:text-lg md:text-xl font-medium text-gray-700 text-center mt-3 p-1 rounded-lg">
+            C Language - PPS | Visualize Iterative Factorial Logic
+        </h2>
+
+        <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
+            <input type="number" id="number-input" placeholder="Enter N (e.g., up to 100)"
+                   class="flex-grow p-3 sm:p-4 border-2 border-indigo-300 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 shadow-lg transition duration-150 min-w-[180px] text-base sm:text-lg">
+            
+            <button id="calculate-button"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl shadow-xl transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 text-base sm:text-lg">
+                Calculate N!
+            </button>
+            
+            <button id="reset-button"
+                    class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl shadow-xl transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 text-base sm:text-lg">
+                Reset
+            </button>
+        </div>
+
+        <div id="breakdown-box" class="w-full min-h-48 bg-gray-50 border-4 border-dashed border-indigo-300 rounded-xl p-4 sm:p-6 transition-all duration-500 shadow-inner">
+            
+            <div id="calculation-breakdown" class="flex flex-wrap items-center justify-center min-h-12 text-xl font-mono text-gray-800 space-x-2">
+                <p class="text-gray-400 text-base sm:text-xl italic select-none">Enter a number (N) and click 'Calculate N!'</p>
+            </div>
+            
+            <div id="result-area" class="mt-8 text-center">
+                <p id="message-area" class="text-lg sm:text-xl font-bold text-gray-700 min-h-6 mb-4"></p>
+                <div id="final-result" class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white p-3 sm:p-4 rounded-xl bg-indigo-500 shadow-2xl transition duration-500 select-none hidden">
+                    <span id="final-result-text" class="text-xl sm:text-2xl md:text-3xl mt-2 block"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="code-compiler-box" class="w-full bg-gray-900 text-white p-4 sm:p-6 rounded-xl shadow-2xl font-mono mt-6">
+            <div class="font-bold mb-3 border-b border-gray-700 pb-2 text-lg sm:text-xl text-cyan-400">C Language Iterative Code:</div>
+            <pre id="c-code-output" class="whitespace-pre-wrap text-xs sm:text-sm text-green-400">
+// C Code for Factorial will appear here after calculation
+            </pre>
+        </div>
+
+        <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+            
+            <img src="https://universitykart.b-cdn.net/Content/upload/admin/ljttqutu.5w1.jfif" 
+                 onerror="this.onerror=null;this.src='https://placehold.co/64x64/000000/FFFFFF?text=Gardi';"
+                 alt="Gardi Vidyapith Logo" 
+                 class="h-10 w-10 md:h-16 md:w-16 object-contain shrink-0 rounded-full border-2 border-indigo-500">
+            
+            <p class="text-center text-xs sm:text-sm md:text-base font-extrabold italic 
+                      bg-purple-200 p-2 rounded-lg shadow-md text-gray-800 mx-2 sm:mx-4 shrink
+                      transition duration-300 transform hover:scale-105 hover:shadow-xl cursor-pointer"> 
+                DESIGNED FOR PPS C-LANG BY MITRAJ & BHARGAV
+            </p>
+
+            <img src="https://yt3.ggpht.com/a/AATXAJwkzcPWXydysxnX_80Og5aHV64bmO9hStKvlg=s900-c-k-c0xffffffff-no-rj-mo"
+                 onerror="this.onerror=null;this.src='https://placehold.co/64x64/000000/FFFFFF?text=GTU';"
+                 alt="Gujarat Technological University Logo" 
+                 class="h-10 w-10 md:h-16 md:w-16 object-contain shrink-0 rounded-full border-2 border-indigo-500">
+        </div>
+        
+    </div>
+
+    <script>
+        // DOM element references
+        let numberInput;
+        let breakdownDisplay;
+        let messageArea;
+        let finalResultDisplay;
+        let finalResultText;
+        let cCodeOutput;
+
+        // --- CORE FUNCTIONS ---
+
+        // Helper function to show temporary messages
+        function showMessage(msg, classes) {
+            messageArea.className = `text-lg sm:text-xl font-bold min-h-6 mb-4 ${classes}`; 
+            messageArea.textContent = msg;
+        }
+
+        /**
+         * Function to generate the C code representation (Iterative Logic).
+         */
+        function generateCCode(N, resultStr) {
+            const safeResult = resultStr.length > 20 ? '... (Overflows long long) ...' : resultStr;
+            
+            let code = `#include <stdio.h>\n\n`;
+            code += `long long factorial_iterative(int n) {\n`;
+            code += `    if (n < 0) return -1;\n`;
+            code += `    long long fact = 1;\n`;
+            code += `    for (int i = 1; i <= n; i++) {\n`;
+            code += `        if (n > 20 && i > 20) {\n`;
+            code += `            // Stopping at i=20 to prevent incorrect result for typical C long long\n`;
+            code += `            return fact;\n`;
+            code += `        }\n`;
+            code += `        fact = fact * i;\n`;
+            code += `    }\n`;
+            code += `    return fact;\n`;
+            code += `}\n\n`;
+            code += `int main() {\n`;
+            code += `    int N = ${N};\n`;
+            code += `    long long result = factorial_iterative(N);\n\n`;
+            code += `    if (result == -1) {\n`;
+            code += `        printf("Error: Factorial not defined for negative numbers.\\n");\n`;
+            code += `    } else {\n`;
+            code += `        printf("%d! = %s\\n", N, "${safeResult}");\n`;
+            code += `    }\n`;
+            code += `    return 0;\n`;
+            code += `}`;
+            return code;
+        }
+        
+        /**
+         * Function to perform the Factorial calculation and update the display
+         */
+        function calculateFactorial() {
+            const value = numberInput.value.trim();
+            const N = Math.floor(parseInt(value, 10));
+
+            // Reset previous results
+            finalResultDisplay.classList.add('hidden');
+            finalResultDisplay.classList.remove('result-glow-animate');
+            breakdownDisplay.innerHTML = '';
+            
+            if (value === '' || isNaN(N) || N < 0) {
+                showMessage("Please enter a valid positive whole number.", "text-red-600");
+                breakdownDisplay.innerHTML = '<p class="text-red-500 text-base sm:text-xl italic select-none">Factorial is only defined for non-negative integers.</p>';
+                cCodeOutput.textContent = generateCCode('N', 'Factorial');
+                return;
+            }
+
+            if (N > 170) {
+                 // N=170 is near the limit of BigInt's internal representation for display
+                showMessage(`N=${N} is very large. Calculation is running...`, "text-orange-600");
+            }
+
+
+            // Handle N=0 and N=1 special cases
+            if (N === 0 || N === 1) {
+                const result = 1;
+                showMessage(`Success! Factorial of ${N} is ${result}.`, "text-green-700");
+                breakdownDisplay.innerHTML = `<span class="breakdown-chip px-3 py-1 bg-green-100 rounded-lg text-lg font-bold shadow-md">
+                                                ${N}! = 1
+                                              </span>`;
+                
+                finalResultText.textContent = '1'; 
+                finalResultDisplay.classList.remove('hidden');
+                finalResultDisplay.classList.add('result-glow-animate');
+                cCodeOutput.textContent = generateCCode(N, result.toString());
+                return;
+            }
+
+            // --- Main Calculation and Visual Breakdown (FIXED TRUNCATION LOGIC) ---
+            
+            let result = 1n; // Use BigInt for accurate large number calculation
+            let breakdownHTML = `<span class="breakdown-chip px-3 py-1 bg-indigo-100 rounded-lg text-xl sm:text-2xl font-bold shadow-md">${N}!</span> = `;
+            
+            const TRUNCATE_LIMIT = 10;
+            const chipClass = "text-xl sm:text-2xl"; 
+            const multiplyClass = "text-2xl sm:text-3xl"; 
+
+            // The loop for BigInt calculation MUST run from 1 to N, matching the C code
+            // But we will gather factors to display in DESCENDING order: N, (N-1), ..., 1
+            const descendingFactors = [];
+            for (let i = 1; i <= N; i++) {
+                result *= BigInt(i); // Calculate result using ascending iteration (1 * 2 * ... * N)
+                descendingFactors.unshift(i); // Store factors in descending order: [N, (N-1), ..., 1]
+            }
+
+            if (N <= TRUNCATE_LIMIT) {
+                // Full breakdown for small N: N x (N-1) x ... x 1 (Descending order)
+                descendingFactors.forEach((i, index) => {
+                    breakdownHTML += `<span class="breakdown-chip px-3 py-1 bg-blue-500 text-white rounded-lg font-bold shadow-md ${chipClass}">
+                                        ${i}
+                                    </span>`;
+                    if (index < descendingFactors.length - 1) {
+                        breakdownHTML += `<span class="font-extrabold mx-1 ${multiplyClass}"> × </span>`;
+                    }
+                });
+            } else {
+                // Truncated breakdown for large N: N x (N-1) x ... x 3 x 2 x 1
+                
+                const START_COUNT = 5; // N, N-1, N-2, N-3, N-4
+                const END_COUNT = 2; // 2, 1
+
+                // Extract start numbers (N down to N-4)
+                const startNumbers = descendingFactors.slice(0, START_COUNT);
+                // Extract end numbers (2 down to 1)
+                const endNumbers = descendingFactors.slice(-END_COUNT); 
+
+                // 1. Start numbers
+                startNumbers.forEach((n, index) => {
+                    breakdownHTML += `<span class="breakdown-chip px-3 py-1 bg-blue-500 text-white rounded-lg font-bold shadow-md ${chipClass}">
+                                        ${n}
+                                    </span>`;
+                    if (index < startNumbers.length - 1) {
+                        breakdownHTML += `<span class="font-extrabold mx-1 ${multiplyClass}"> × </span>`;
+                    }
+                });
+
+                // 2. Ellipsis
+                breakdownHTML += `<span class="breakdown-chip px-3 py-1 text-gray-700 rounded-lg font-bold shadow-none ${chipClass}"> ... </span>`;
+                
+                // 3. Multiplication symbol before the end numbers
+                breakdownHTML += `<span class="font-extrabold mx-1 ${multiplyClass}"> × </span>`;
+
+                // 4. End numbers (3 x 2 x 1, but we only show 2 x 1 here)
+                endNumbers.forEach((n, index) => {
+                    breakdownHTML += `<span class="breakdown-chip px-3 py-1 bg-blue-500 text-white rounded-lg font-bold shadow-md ${chipClass}">
+                                        ${n}
+                                    </span>`;
+                    // The last term (1) should not have a multiplication symbol after it
+                    if (index < endNumbers.length - 1) { 
+                        breakdownHTML += `<span class="font-extrabold mx-1 ${multiplyClass}"> × </span>`;
+                    }
+                });
+            }
+
+            breakdownDisplay.innerHTML = breakdownHTML;
+
+            // Convert BigInt result to string for display
+            const finalResultStr = result.toString();
+            
+            showMessage(`Success! Factorial of ${N} calculated.`, "text-green-700");
+            
+            // Truncate the displayed result if it's too long
+            const displayResult = finalResultStr.length > 500 
+                ? `${finalResultStr.substring(0, 10)}...[${finalResultStr.length} digits]...${finalResultStr.substring(finalResultStr.length - 10)}` 
+                : finalResultStr;
+
+            finalResultText.textContent = displayResult;
+
+            finalResultDisplay.classList.remove('hidden');
+            finalResultDisplay.classList.add('result-glow-animate');
+
+            // Generate the C code
+            cCodeOutput.textContent = generateCCode(N, finalResultStr);
+        }
+
+        // Function to reset the application state
+        function resetApp() {
+            numberInput.value = '';
+            // Adjusted placeholder size
+            breakdownDisplay.innerHTML = '<p class="text-gray-400 text-base sm:text-xl italic select-none">Enter a number (N) and click \'Calculate N!\'</p>';
+            messageArea.textContent = '';
+            finalResultDisplay.classList.add('hidden');
+            finalResultDisplay.classList.remove('result-glow-animate');
+            cCodeOutput.textContent = generateCCode('N', 'Factorial'); // Reset code
+            numberInput.focus();
+        }
+        
+        // --- Initialization and Event Attachments ---
+
+        function initApp() {
+            // Get DOM elements
+            numberInput = document.getElementById('number-input');
+            breakdownDisplay = document.getElementById('calculation-breakdown');
+            messageArea = document.getElementById('message-area');
+            finalResultDisplay = document.getElementById('final-result');
+            finalResultText = document.getElementById('final-result-text');
+            cCodeOutput = document.getElementById('c-code-output');
+
+            // Attach Event Listeners
+            document.getElementById('calculate-button').addEventListener('click', calculateFactorial);
+            document.getElementById('reset-button').addEventListener('click', resetApp);
+            
+            // Handle Enter keypress on the input field
+            numberInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    calculateFactorial();
+                }
+            });
+
+            // Initial setup when the page loads
+            resetApp(); 
+        }
+
+        // Wait for the entire DOM content to load before initializing the app
+        window.addEventListener('load', initApp);
+    </script>
+</body>
+</html>
